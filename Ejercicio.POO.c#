@@ -1,0 +1,77 @@
+﻿/*en el el supermercado "compras felices" se decidio implementar un sistema para gestionar el invertario de los productos y
+ * ordenes de compras de los clientes.
+ * Los productos se categorizan en secciones como frutas, verduras, lacteos, y carnes, cada producto toiene un codigo,nombre
+ * ,cantidad de stock y precio. Ademas se quiere gestionar las ordenes de compra que contiene multiples productos y debe
+ * gestionar el total de la orden.*/
+
+using System.Collections.Generic;
+
+class Producto
+{
+    public string Codigo { get; set; }
+    public string Nombre { get; set; }
+    public int CantidadStock { get; set; }
+    public double Precio { get; set; }
+
+    public Producto(string Codigo,string Nombre, int CantidadStock, double Precio)
+    {
+        this.Codigo = Codigo;
+        this.Nombre = Nombre;
+        this.CantidadStock = CantidadStock;
+        this.Precio = Precio;
+    }
+    public void ActualizarStock(int cantidad)
+    {
+        CantidadStock += cantidad;
+    }
+}
+class OrdenCompra
+{
+    private List<Producto> _productos;
+
+    public OrdenCompra()
+    {
+        _productos = new List<Producto>();
+    }
+    public void AgregarProducto(Producto producto)
+    {
+        _productos.Add(producto);
+    } 
+    public decimal CalcularTotal()
+    {
+        double total = 0;
+        foreach (var producto in _productos)
+        { 
+            total += producto.Precio;
+        }
+        return Convert.ToDecimal(total);
+    }
+    public void MostrarDetallesCompra()
+    {
+        Console.WriteLine("Detalles de la factura:");
+        foreach(var producto in _productos)
+        {
+            Console.WriteLine($"Producto : {producto.Nombre}\n Precio: {producto.Precio}");
+            Console.WriteLine("_____________________________________________________");
+        }
+        Console.WriteLine($"Total de la compra: {CalcularTotal()}");
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        Producto banana = new Producto("001a","banana",100,1.20);
+        Producto leche = new Producto("002a", "leche", 170, 1.30);
+        Producto carne = new Producto("005a", "carne", 120, 6.50);
+
+        OrdenCompra miOrden = new OrdenCompra();
+        miOrden.AgregarProducto(carne);
+        miOrden.AgregarProducto(banana);
+        miOrden.AgregarProducto(leche);
+
+        miOrden.MostrarDetallesCompra();
+
+  
+    }
+}
